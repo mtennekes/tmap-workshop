@@ -8,28 +8,27 @@ Besides plotting spatial data, we will also discuss the possibilities of *public
 
 R packages: tmap, sf, sp, raster, rmarkdown, shiny
 
-Tennekes, M. (2018) tmap: Thematic Maps in R. Forthcoming in the Journal of Statistical Software (JSS).
+[Tennekes, M., 2018, {tmap}: Thematic Maps in {R}, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
 
 
 ### Overview of CRAN pacakges on spatial data
 
 177 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
-I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/, which was also the topic of the Workshop this morning (https://github.com/jannes-m/erum18_geocompr). There are two package which are fundamental:
+I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/, which was also the topic of the [workshop](https://github.com/jannes-m/erum18_geocompr) this morning. There are two fundamental package for spatial data:
 
-* `sf` classes and methods for vector data (it is replacing `sp`, currently the most frequenctly used R package on spatial R)
+* `sf` classes and methods for vector data (it is replacing `sp`, currently the most frequenctly used R package on spatial data)
 * `raster` classes and methods for raster data (will eventually be replaced by `stars`)
 
 These two packages will allow you to do all basic analysis and visualization of spatial data.
 
-
-The `tmap` package is build on top of the shoulders of giants. As a consequence, once you install tmap, the most important other packages that are useful for spatial data will be installed as well. Note that installation may require some effort. 
+The `tmap` package is build on top of the shoulders of many great packages. As a consequence, once you install tmap, the most important other packages that are useful for spatial data will be installed as well. Note that installation may therefore require some effort. 
 
 
 ### Installation of tmap
 
-You can install either from CRAN (version 1.11-2) of from github (version 2.0). 
+You can install either from CRAN (version 1.11-2) of from github (version 2.0). I recommend to install the newest version (so 2.0), which will be submitted to CRAN in a couple of weeks. Note that tmap version 2.0 also requires tmaptools version 2.0.
 
-The tmap package will have a major update (version 2.0) soon. The github version is 2.0, while the CRAN version is 1.11-2. If you would like to use version 2.0, but still want to be able to fall back to (the more stable) 1.11-2, you can use the following approach:
+If you would like to use version 2.0, but still want to be able to fall back to (the more stable) 1.11-2, you can use the following approach:
 
 ```{r}
 install.packages(c("devtools", "tmap"))
@@ -40,7 +39,9 @@ install_github("mtennekes/tmaptools")
 install_github("mtennekes/tmap")
 ```
 
-See https://github.com/mtennekes/tmap/#installation for installation instructions, which is especially useful for Linux users.
+When the develepment mode (`dev_mode` from the `devtools` package) is enabled, packages will be installed in a special additional library folder, by default called `R-dev`.
+
+See https://github.com/mtennekes/tmap/#installation for further installation instructions, which is especially useful for Linux users.
 
 For those of you who use Docker, see https://hub.docker.com/r/robinlovelace/geocompr which contains all packages needed for spatial data visualization (including tmap version 2.0).
 
@@ -54,24 +55,30 @@ library(tmaptools)
 ```
 
 
-## Getting spetial data
+## Getting spatial data
 
 It's your choice what spatial data you want to use in this workshop. Some suggestions:
 
-There are a couple of data sets contained in tmap. The most interesting are `World`, which contains World country data, `metro`, which contains population time series for large metropolitan areas, and `land`, which is rasterized data of land use and tree coverage.
+#### Data contained in tmap
+
+There are a couple of datasets contained in tmap. The most interesting are `World`, which contains World country data, `metro`, which contains population time series for large metropolitan areas, and `land`, which is rasterized data of land use and tree coverage.
 
 ```{r}
 library(tmap)
-data(World, metro)
+data(World, metro, land)
 ```
+
+#### Data from spData and spDataLarge
 
 Thep packages `spData` and `spDataLarge` contain many spatial datasets. See `https://github.com/Nowosad/spData` for an overview of available datasets. 
 
 ```{r}
 library(spData)
-library(spDataLarge) #  install.packages('spDataLarge', repos='https://nowosad.github.io/drat/', type='source'))
+library(spDataLarge) 
+#install.packages('spDataLarge', repos='https://nowosad.github.io/drat/', type='source'))
 ```
 
+#### Open Street Map data
 The pacakge `osmdata` is an interface to OpenStreetMap.
 
 ```{r}
@@ -82,6 +89,10 @@ q_smkt <- add_osm_feature(q, key = "shop", value = "supermarket", value_exact = 
 x_smkt <- osmdata_sf(q_smkt)
 ```
 
+Large datasets from Open Street Map per country can be found at https://download.geofabrik.de/ 
+
+
+#### Natural Earth Data
 The package `rnaturalearth` is an interface to `www.naturalearthdata.com`, a great source of shapes.
 
 ```{r}
@@ -89,7 +100,17 @@ library(rnaturalearth)
 airports <- ne_download( scale = 10, type = 'ports' )
 ```
 
+## Crimes in London
+
+This [file](https://www.jstatsoft.org/index.php/jss/article/downloadSuppFile/v084i06/crimes_in_Greater_London_2015-10.zip) contains data from crimes commited in Greater London in October 2015. It is used in the [tmap JSS paper](https://doi.org/10.18637/jss.v084.i06).
+
+
 ## Assignment
 
-Your first task is to explore the spatial data sets you are using.
+*Explore*, *analyse* and *present* the dataset of your choice with tmap. In the exploration phase, try to find interesting patterns in the data. Experiment with different types of layers and aesthetic mappings. 
 
+Next, try different color palettes and class intervals. Also, experiement with small multiples. 
+
+Finally, finetune the maps such that they are publication-ready. Export them to either static files of interactive maps.
+
+Extra: embed a map made with tmap in a shiny app. A shiny app can be useful for exploration, analysis, and presentation.

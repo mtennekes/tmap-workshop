@@ -11,30 +11,40 @@ R packages: tmap, sf, sp, raster, rmarkdown, shiny
 Tennekes, M. (2018) tmap: Thematic Maps in R. Forthcoming in the Journal of Statistical Software (JSS).
 
 
-## Part 1: overview and installation of required package
-
-### Overview
+### Overview of CRAN pacakges on spatial data
 
 177 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
-I can imagine, you can't see the wood for the trees anymore.
-
-An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/, which was also the topic of the Workshop this morning.
-
-There are two package which are fundamental:
+I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/, which was also the topic of the Workshop this morning (https://github.com/jannes-m/erum18_geocompr). There are two package which are fundamental:
 
 * `sf` classes and methods for vector data (it is replacing `sp`, currently the most frequenctly used R package on spatial R)
-* `raster` classes and methods for raster data
+* `raster` classes and methods for raster data (will eventually be replaced by `stars`)
 
 These two packages will allow you to do all basic analysis and visualization of spatial data.
 
-It you compare the set of packages of spatial data with the animal kingdom, `tmap` can be seen as a top preditor: it imports many of these packages, which recursively import other packages. In other words, the tmap package is build on top of the shoulders of giants. As a consequence, once you install tmap, the most important other packages that are useful for spatial data will be installed as well.
+
+The `tmap` package is build on top of the shoulders of giants. As a consequence, once you install tmap, the most important other packages that are useful for spatial data will be installed as well. Note that installation may require some effort. 
 
 
-### Installation
+### Installation of tmap
 
-You can install either from CRAN of from github. See https://github.com/mtennekes/tmap/#installation for installation instructions.
+You can install either from CRAN (version 1.11-2) of from github (version 2.0). 
 
-For those of you who use Docker, see https://hub.docker.com/r/robinlovelace/geocompr which contains all packages needed for spatial data visualization (including tmap).
+The tmap package will have a major update (version 2.0) soon. The github version is 2.0, while the CRAN version is 1.11-2. If you would like to use version 2.0, but still want to be able to fall back to (the more stable) 1.11-2, you can use the following approach:
+
+```{r}
+install.packages(c("devtools", "tmap"))
+
+library(devtools)
+dev_mode()
+install_github("mtennekes/tmaptools")
+install_github("mtennekes/tmap")
+```
+
+See https://github.com/mtennekes/tmap/#installation for installation instructions, which is especially useful for Linux users.
+
+For those of you who use Docker, see https://hub.docker.com/r/robinlovelace/geocompr which contains all packages needed for spatial data visualization (including tmap version 2.0).
+
+Loading the required packages:
 
 ```{r}
 library(sf)
@@ -44,11 +54,11 @@ library(tmaptools)
 ```
 
 
-## Part 2: get spetial data
+## Getting spetial data
 
 It's your choice what spatial data you want to use in this workshop. Some suggestions:
 
-There are a couple of data sets contained in tmap. The most interesting are `World`, which contains World country data, and `metro`, which contains population time series for large metropolitan areas.
+There are a couple of data sets contained in tmap. The most interesting are `World`, which contains World country data, `metro`, which contains population time series for large metropolitan areas, and `land`, which is rasterized data of land use and tree coverage.
 
 ```{r}
 library(tmap)
@@ -59,7 +69,7 @@ Thep packages `spData` and `spDataLarge` contain many spatial datasets. See `htt
 
 ```{r}
 library(spData)
-library(spDataLarge) #  nstall.packages('spDataLarge', repos='https://nowosad.github.io/drat/', type='source'))
+library(spDataLarge) #  install.packages('spDataLarge', repos='https://nowosad.github.io/drat/', type='source'))
 ```
 
 The pacakge `osmdata` is an interface to OpenStreetMap.
@@ -72,8 +82,14 @@ q_smkt <- add_osm_feature(q, key = "shop", value = "supermarket", value_exact = 
 x_smkt <- osmdata_sf(q_smkt)
 ```
 
+The package `rnaturalearth` is an interface to `www.naturalearthdata.com`, a great source of shapes.
 
+```{r}
+library(rnaturalearth)
+airports <- ne_download( scale = 10, type = 'ports' )
+```
 
-## Part 3: explore spatial data
+## Assignment
 
-## Part 4: publication
+Your first task is to explore the spatial data sets you are using.
+

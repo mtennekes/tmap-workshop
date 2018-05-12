@@ -8,7 +8,7 @@ Besides plotting spatial data, we will also discuss the possibilities of *public
 
 R packages: tmap, sf, sp, raster, rmarkdown, shiny
 
-[Tennekes, M., 2018, {tmap}: Thematic Maps in {R}, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
+[Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
 
 
 ### Overview of CRAN pacakges on spatial data
@@ -16,7 +16,7 @@ R packages: tmap, sf, sp, raster, rmarkdown, shiny
 177 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
 I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/, which was also the topic of the [workshop](https://github.com/jannes-m/erum18_geocompr) this morning. There are two fundamental package for spatial data:
 
-* `sf` classes and methods for vector data (it is replacing `sp`, currently the most frequenctly used R package on spatial data)
+* `sf` classes and methods for vector data (it is replacing `sp`, currently the most frequently used R package on spatial data)
 * `raster` classes and methods for raster data (will eventually be replaced by `stars`)
 
 These two packages will allow you to do all basic analysis and visualization of spatial data.
@@ -70,7 +70,7 @@ data(World, metro, land)
 
 #### Data from spData and spDataLarge
 
-Thep packages `spData` and `spDataLarge` contain many spatial datasets. See `https://github.com/Nowosad/spData` for an overview of available datasets. 
+The packages `spData` and `spDataLarge` contain many spatial datasets. See `https://github.com/Nowosad/spData` for an overview of available datasets. 
 
 ```{r}
 library(spData)
@@ -97,20 +97,20 @@ The package `rnaturalearth` is an interface to `www.naturalearthdata.com`, a gre
 
 ```{r}
 library(rnaturalearth)
-airports <- ne_download( scale = 10, type = 'ports' )
+airports <- ne_download(scale = 10, type = 'airports' )
 ```
 
-## Crimes in London
+#### Crimes in London
 
-This [file](https://www.jstatsoft.org/index.php/jss/article/downloadSuppFile/v084i06/crimes_in_Greater_London_2015-10.zip) contains data from crimes commited in Greater London in October 2015. It is used in the [tmap JSS paper](https://doi.org/10.18637/jss.v084.i06).
+This [file](https://www.jstatsoft.org/index.php/jss/article/downloadSuppFile/v084i06/crimes_in_Greater_London_2015-10.zip) contains data from crimes committed in Greater London in October 2015. It is used in the [tmap JSS paper](https://doi.org/10.18637/jss.v084.i06).
 
 
 ## Assignment
 
-*Explore*, *analyse* and *present* the dataset of your choice with tmap. In the exploration phase, try to find interesting patterns in the data. Experiment with different types of layers and aesthetic mappings. 
+*Explore*, *analyse* and *present* the dataset of your choice with tmap. 
 
-Next, try different color palettes and class intervals. Also, experiement with small multiples. 
-
-Finally, finetune the maps such that they are publication-ready. Export them to either static files of interactive maps.
+* In the exploration phase, try to find interesting patterns in the data. Experiment with different types of layers and aesthetic mappings. 
+* Next, try different color palettes and class intervals. Also, experiment with small multiples. 
+* Finally, fine-tune the maps such that they are publication-ready. Export them to either static files of interactive maps.
 
 Extra: embed a map made with tmap in a shiny app. A shiny app can be useful for exploration, analysis, and presentation.

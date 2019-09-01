@@ -1,4 +1,4 @@
-# Plotting spatial data in R
+# Creating thematic maps in R
 
 In this workshop you will learn how to plot spatial data in R by using the **tmap** package. This package is an implementation of the grammar of graphics for thematic maps, and resembles the syntax of **ggplot2**. This package is useful for both *exploration* and *publication* of spatial data, and offers both *static* and *interactive* plotting.
 
@@ -6,14 +6,14 @@ For those of you who are unfamiliar with spatial data in R, we will briefly intr
 
 Besides plotting spatial data, we will also discuss the possibilities of *publication*. Maps created with **tmap** can be exported as static images, html files, but they can also be embedded in **rmarkdown** documents and **shiny** apps.
 
-R packages: tmap, sf, sp, raster, rmarkdown, shiny
+R packages: tmap, sf, raster, rmarkdown, shiny
 
 [Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
 
 
 ### Overview of CRAN pacakges on spatial data
 
-176 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
+Around 200 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
 I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/. There are two fundamental package for spatial data:
 
 * `sf` classes and methods for vector data (which has replaced `sp`, although many spatial packages still rely on `sp`)
@@ -64,15 +64,6 @@ library(spDataLarge)
 ```
 
 #### Open Street Map data
-The pacakge `osmdata` is an interface to OpenStreetMap.
-
-```{r}
-library(osmdata)
-
-q <- opq("The Hague")
-q_smkt <- add_osm_feature(q, key = "shop", value = "supermarket", value_exact = FALSE)
-x_smkt <- osmdata_sf(q_smkt)
-```
 
 Large datasets from Open Street Map per country can be found at https://download.geofabrik.de/ 
 

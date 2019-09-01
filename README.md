@@ -8,6 +8,8 @@ Besides plotting spatial data, we will also discuss the possibilities of *public
 
 R packages: tmap, sf, raster, rmarkdown, shiny
 
+[Presentation slides: Creating thematic maps in R](https://mtennekes.github.io/downloads/presentations/tmap_opengeo_muenster.pdf)
+
 [Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
 
 

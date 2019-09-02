@@ -10,16 +10,17 @@ R packages: tmap, sf, raster, rmarkdown, shiny
 
 [Presentation slides: Creating thematic maps in R](https://mtennekes.github.io/downloads/presentations/tmap_opengeo_muenster.pdf)
 
-[Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
+[Lovelace, R., Nowosad, J., and Muenchow, J., 2019, Making maps with R. Chapter 8 from Geocomputation with R](https://geocompr.robinlovelace.net/adv-map.html)
 
+[Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
 
 ### Overview of CRAN pacakges on spatial data
 
 Around 200 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
-I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/. There are two fundamental package for spatial data:
+I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/. Two popular fundamental packages for spatial data:
 
 * `sf` classes and methods for vector data (which has replaced `sp`, although many spatial packages still rely on `sp`)
-* `raster` classes and methods for raster data (will eventually be replaced by `stars`)
+* `raster` classes and methods for raster data (modern alternatives: `terra` and `stars`)
 
 These two packages will allow you to do all basic analysis and visualization of spatial data.
 
@@ -72,7 +73,6 @@ library(spDataLarge)
 #### Open Street Map data
 
 Large datasets from Open Street Map per country can be found at https://download.geofabrik.de/ 
-
 
 #### Natural Earth Data
 The package `rnaturalearth` is an interface to `www.naturalearthdata.com`, a great source of shapes.

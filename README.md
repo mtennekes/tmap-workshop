@@ -28,7 +28,11 @@ The `tmap` package is build on top of the shoulders of these two and many other 
 
 Both `tmap` and `tmaptools` can be installed from CRAN. Note that the installation requires some effort for Linux and macOS, since additional system libraries are needed, e.g. `gdal`. See https://github.com/mtennekes/tmap#installation for installation details.
 
-For those of you who use Docker, see https://hub.docker.com/r/robinlovelace/geocompr which contains all packages needed for spatial data visualization (including tmap and tmaptools).
+For this workshop, we recommend to install the development version of `tmap` on github, which will soon be published on CRAN:
+
+```{r}
+devtools::install_github("mtennekes/tmap")
+```
 
 Loading the required packages:
 

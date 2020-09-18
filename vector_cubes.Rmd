@@ -17,7 +17,7 @@ We recommend to install the github version of **stars**, and the CRAN version of
 if (!require(remotes))
   install.packages("remotes")
 remotes::install_github("r-spatial/stars")
-#install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
+install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
 install.packages("tmap")
 ```
 

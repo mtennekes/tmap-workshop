@@ -12,7 +12,7 @@ version of **tmap**:
 if (!require(remotes))
 install.packages("remotes")
 remotes::install_github("r-spatial/stars")
-#install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
+install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
 install.packages("tmap")
 ```
 
@@ -200,3 +200,81 @@ tm_shape(nc) +
     ## coordinates assumed.
 
 ![](raster_cubes_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+## Large Sentinel-2 data
+
+A large Snetinel-2 image is contained in the **starsdata** package:
+
+``` r
+granule = system.file("sentinel/S2A_MSIL1C_20180220T105051_N0206_R051_T32ULE_20180221T134037.zip", 
+  package = "starsdata")
+s2 = paste0("SENTINEL2_L1C:/vsizip/", granule, 
+  "/S2A_MSIL1C_20180220T105051_N0206_R051_T32ULE_20180221T134037.SAFE/MTD_MSIL1C.xml:10m:EPSG_32632")
+(p = read_stars(s2))
+```
+
+    ## stars_proxy object with 1 attribute in file:
+    ## $`MTD_MSIL1C.xml:10m:EPSG_32632`
+    ## [1] "[...]/MTD_MSIL1C.xml:10m:EPSG_32632"
+    ## 
+    ## dimension(s):
+    ##      from    to offset delta                refsys point    values x/y
+    ## x       1 10980  3e+05    10 WGS 84 / UTM zone 32N    NA      NULL [x]
+    ## y       1 10980  6e+06   -10 WGS 84 / UTM zone 32N    NA      NULL [y]
+    ## band    1     4     NA    NA                    NA    NA B4,...,B8
+
+Note that `p` is a `stars_proxy` object, so the data is not stored into
+memory. We we plot it with **tmap**, where this time we use the `qtm`
+(quick thematic map) function, the object is downsampled automatically
+by default.
+
+``` r
+qtm(p)
+```
+
+    ## stars_proxy object shown at 1000 by 1000 cells.
+
+![](raster_cubes_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+Downsampling can be turned off with the following code. However, this
+can be very slow.
+
+``` r
+tm_shape(p, raster.downsample = FALSE) + 
+  tm_raster()
+```
+
+We can plot the image by using `tm_rgb`. For the red, green, and blue
+channel, we need bands 4, 3, and 2 respectively (see
+<https://en.wikipedia.org/wiki/Sentinel-2>).
+
+``` r
+tm_shape(p) +
+  tm_rgb(3,2,1, max.value = 14000)
+```
+
+    ## stars_proxy object shown at 1000 by 1000 cells.
+
+![](raster_cubes_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+## Warping and transforming stars
+
+When stars need to be converted into another projection (CRS), **tmap**
+will use warping by default, since this is much quicker. A transformed
+stars object is often not regular anymore, so under the hood it has to
+be converted to polygons, which can be time consuming.
+
+We see such as warped raster when plotting the last map in interactive
+(“view”) mode:
+
+``` r
+tmap_mode("view")
+tm_shape(p) +
+  tm_rgb(3,2,1, max.value = 14000)
+```
+
+``` r
+knitr::include_graphics("sentinel-2-interactive.png")
+```
+
+<img src="sentinel-2-interactive.png" width="2014" />

@@ -1,15 +1,15 @@
 ---
-title: "vector-cubes-tmap"
+title: "Visualization of vector data cubes with tmap"
 author: "Martijn Tennekes"
 date: "9/18/2020"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Installation of stars and starsdata 
+## Installation of stars and tmap 
 
 We recommend to install the github version of **stars**, and the CRAN version of **tmap**:
 
@@ -17,7 +17,7 @@ We recommend to install the github version of **stars**, and the CRAN version of
 if (!require(remotes))
   install.packages("remotes")
 remotes::install_github("r-spatial/stars")
-install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
+#install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
 install.packages("tmap")
 ```
 
@@ -28,7 +28,7 @@ library(stars)
 library(tmap)
 ```
 
-## Vector data cube example
+## North Carolina example
 
 This example is the North Carolina SIDS (sudden infant death syndrome) data set. See https://edzer.github.io/UseR2020/#Vector_data_cube:_North_Carolina_SIDS
 
@@ -56,7 +56,7 @@ IR = nc.sum[2]/nc.sum[1]
 (nc.SIR = st_apply(nc.geom, c(1,3), function(x) (x[2]/x[1])/IR))
 ```
 
-## Plot it with tmap
+## Visualization with tmap
 
 The next version of **tmap** will support those vector cubes natively. The code to create two maps, one for each year, should be as simple as:
 

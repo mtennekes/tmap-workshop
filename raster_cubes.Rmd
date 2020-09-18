@@ -1,15 +1,15 @@
 ---
-title: "raster-cubes-tmap"
+title: "Visualization of raster data cubes with tmap"
 author: "Martijn Tennekes"
 date: "9/18/2020"
-output: html_document
+output: rmarkdown::github_document
 ---
   
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Installation of stars and starsdata 
+## Installation of stars and tmap 
 
 We recommend to install the github version of **stars**, and the CRAN version of **tmap**:
   
@@ -17,7 +17,7 @@ We recommend to install the github version of **stars**, and the CRAN version of
 if (!require(remotes))
 install.packages("remotes")
 remotes::install_github("r-spatial/stars")
-install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
+#install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
 install.packages("tmap")
 ```
 
@@ -28,22 +28,16 @@ library(stars)
 library(tmap)
 ```
 
-## Vector data cube example
+## Landset-7 image
 
-This example is the North Carolina SIDS (sudden infant death syndrome) data set. See https://edzer.github.io/UseR2020/#Vector_data_cube:_North_Carolina_SIDS
-  
-The code to create the vector cube is the following:
-  
+This example shows a small image from the Landset-7 satellite:
+
 ```{r}
 L7file = system.file("tif/L7_ETMs.tif", package = "stars")
 (L7 = read_stars(L7file))
 ```
 
-
-
-## Plot it with tmap
-
-Star objects can be plot with `tm_raster` as follows:
+Raster data cubes can be plot with `tm_raster` as follows:
   
 ```{r}
 tm_shape(L7) +
@@ -84,4 +78,40 @@ tm_shape(L7_mod) +
   tm_rgb(1, 2, 3, max.value = 125)
 ```
 
+## Weather data
 
+Monthly precipitation and average temperature of North Carolina
+
+Load the weather dataset with two attributes, the monthly precipitation `pr` (mm per month), and the average temperature `C` in Celcius:
+
+```{r}
+(w = system.file("nc/bcsd_obs_1999.nc", package = "stars") %>%
+    read_stars("data/full_data_daily_2013.nc"))
+```
+
+
+Load the county borders of North Carolina:
+
+```{r}
+nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
+```
+
+For weather maps, it is common to use a blue palette for precipitation, and a rainbow palette for temperature. Two widely used sets of color palettes are ColorBrewer and viridis, which are implemented in the packages **RColorBrewer** and **viridisLite**, but both are imported by **tmap**, so they can be used directly. The corresponding palettes can be explored with a shiny app initiated with \code{tmaptools::palette_explorer()}. It is also worth checking the **pals** package, which contains many more color palettes.
+
+In the next code chunk, we map precepitation to a continuous color scale, where we use "Blues" from ColorBrewer.
+
+```{r}
+tm_shape(w[1]) +
+  tm_raster(title = "Precipitation [mm/m]", palette = "Blues", style = "cont") +
+tm_shape(nc) +
+  tm_borders()
+```
+
+For temperature, we use a rainbow palette from the **pals** package. We choose discrete color classes in order to be able to improve readability. Both methods (discrete vs continuous color scales) have pros and cons. It is recommended to experiment with both of them to find out which one is better for the task at hand.
+
+```{r}
+tm_shape(w[2]) +
+  tm_raster(title = "Temperature [C]", palette = pals::kovesi.rainbow(n=10), midpoint = 15) +
+tm_shape(nc) +
+  tm_borders()
+```

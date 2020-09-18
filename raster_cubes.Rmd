@@ -1,0 +1,87 @@
+---
+title: "raster-cubes-tmap"
+author: "Martijn Tennekes"
+date: "9/18/2020"
+output: html_document
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installation of stars and starsdata 
+
+We recommend to install the github version of **stars**, and the CRAN version of **tmap**:
+  
+```{r, eval=FALSE}
+if (!require(remotes))
+install.packages("remotes")
+remotes::install_github("r-spatial/stars")
+install.packages("starsdata", repos = "https://gis-bigdata.uni-muenster.de/pebesma", type = "source")
+install.packages("tmap")
+```
+
+Load the packages:
+  
+```{r}
+library(stars)
+library(tmap)
+```
+
+## Vector data cube example
+
+This example is the North Carolina SIDS (sudden infant death syndrome) data set. See https://edzer.github.io/UseR2020/#Vector_data_cube:_North_Carolina_SIDS
+  
+The code to create the vector cube is the following:
+  
+```{r}
+L7file = system.file("tif/L7_ETMs.tif", package = "stars")
+(L7 = read_stars(L7file))
+```
+
+
+
+## Plot it with tmap
+
+Star objects can be plot with `tm_raster` as follows:
+  
+```{r}
+tm_shape(L7) +
+  tm_raster()
+```
+
+Note that most values are around 50 to 100. In order to create more contrast, we can use the *kmeans* algorithm, which creates clusters (by default 5). Note that data for which we apply kmeans is one dimensional.
+
+```{r}
+tm_shape(L7) +
+  tm_raster(style = "kmeans")
+```
+
+We can also create an rgb image as with `tm_rgb`:
+
+```{r}
+tm_shape(L7) +
+  tm_rgb(1, 2, 3)
+```
+
+The image is a bit too dark due to the low values; recall that most values are around 50-100, while the value range is from 0 to 255.
+Let us look at the histogram:
+
+```{r}
+hist(L7[[1]], breaks = 100)
+```
+
+Since `tm_rgb` plot the data values 'as is', so without transformations, we can apply the transformation in advance.
+
+
+```{r}
+library(dplyr)
+L7_mod = L7 %>% st_apply(3, pmax, 25) %>% 
+  st_apply(3, pmin, 150) %>% 
+  '-'(25)
+
+tm_shape(L7_mod) +
+  tm_rgb(1, 2, 3, max.value = 125)
+```
+
+

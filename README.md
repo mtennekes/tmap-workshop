@@ -1,12 +1,14 @@
-# Creating thematic maps in R
+# Visualising spatial and spatiotemporal data cubes with tmap
 
 In this workshop you will learn how to plot spatial data in R by using the **tmap** package. This package is an implementation of the grammar of graphics for thematic maps, and resembles the syntax of **ggplot2**. This package is useful for both *exploration* and *publication* of spatial data, and offers both *static* and *interactive* plotting.
 
-For those of you who are unfamiliar with spatial data in R, we will briefly introduce the fundamental packages for spatial data, which are **sf** and **raster**. With demonstrations and exercises, you will learn how to process spatial objects from various types (polygons, points, lines, rasters, and simple features), and how to plot them. Feel free to bring your own spatial data.
+For those of you who are unfamiliar with spatial data in R, we will briefly introduce the fundamental packages for spatial data, which are **sf** and **stars**. With demonstrations and exercises, you will learn how to process spatial objects from various types (polygons, points, lines, rasters, and simple features), and how to plot them. 
 
 Besides plotting spatial data, we will also discuss the possibilities of *publication*. Maps created with **tmap** can be exported as static images, html files, but they can also be embedded in **rmarkdown** documents and **shiny** apps.
 
-R packages: tmap, sf, raster, rmarkdown, shiny
+### Documentation
+
+See https://github.com/mtennekes/tmap for former presentations and blog posts about tmap. The most useful links are:
 
 [Presentation slides: Creating thematic maps in R](https://mtennekes.github.io/downloads/presentations/tmap_opengeo_muenster.pdf)
 
@@ -14,34 +16,17 @@ R packages: tmap, sf, raster, rmarkdown, shiny
 
 [Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://doi.org/10.18637/jss.v084.i06)
 
-### Overview of CRAN pacakges on spatial data
-
-Around 200 CRAN packages are listed in the [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html)
-I can imagine, you can't see the wood for the trees anymore. An excellent online book to get started with spatial data is: https://geocompr.robinlovelace.net/. Two popular fundamental packages for spatial data:
-
-* `sf` classes and methods for vector data (which has replaced `sp`, although many spatial packages still rely on `sp`)
-* `raster` classes and methods for raster data (modern alternatives: `terra` and `stars`)
-
-These two packages will allow you to do all basic analysis and visualization of spatial data.
-
-The `tmap` package is build on top of the shoulders of these two and many other great packages. As a consequence, once you install tmap, the most important other packages that are useful for spatial data will be installed as well. Note that installation may therefore require some effort. 
-
+We are currently writing a book on tmap. We aim to make a draft version public by the end of this year.
 
 ### Installation of tmap
 
 Both `tmap` and `tmaptools` can be installed from CRAN. Note that the installation requires some effort for Linux and macOS, since additional system libraries are needed, e.g. `gdal`. See https://github.com/mtennekes/tmap#installation for installation details.
 
-For this workshop, we recommend to install the development version of `tmap` on github, which will soon be published on CRAN:
-
-```{r}
-devtools::install_github("mtennekes/tmap")
-```
-
 Loading the required packages:
 
 ```{r}
 library(sf)
-library(raster)
+library(stars)
 library(tmap)
 library(tmaptools)
 ```

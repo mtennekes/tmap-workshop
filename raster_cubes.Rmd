@@ -177,3 +177,32 @@ knitr::include_graphics("sentinel-2-interactive.png")
 ```
 
 
+## Time series
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+x = c(
+  "avhrr-only-v2.19810901.nc",
+  "avhrr-only-v2.19810902.nc",
+  "avhrr-only-v2.19810903.nc",
+  "avhrr-only-v2.19810904.nc",
+  "avhrr-only-v2.19810905.nc",
+  "avhrr-only-v2.19810906.nc",
+  "avhrr-only-v2.19810907.nc",
+  "avhrr-only-v2.19810908.nc",
+  "avhrr-only-v2.19810909.nc"
+)
+file_list = system.file(paste0("netcdf/", x), package = "starsdata")
+(y = read_stars(file_list, quiet = TRUE))
+(z = adrop(y))
+
+```
+
+
+```{r}
+
+tmap_options(max.raster = c(plot = 1e4, view = 1e4))
+
+tm_shape(z[1]) +
+  tm_raster()
+```

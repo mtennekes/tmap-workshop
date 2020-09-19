@@ -80,7 +80,7 @@ We can also create an rgb image as with `tm_rgb`:
 
 ``` r
 tm_shape(L7) +
-  tm_rgb(1, 2, 3)
+  tm_rgb(3, 2, 1)
 ```
 
 ![](raster_cubes_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -119,10 +119,21 @@ L7_mod = L7 %>% st_apply(3, pmax, 25) %>%
   '-'(25)
 
 tm_shape(L7_mod) +
-  tm_rgb(1, 2, 3, max.value = 125)
+  tm_rgb(3, 2, 1, max.value = 125)
 ```
 
 ![](raster_cubes_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+We can also draw a false color image, by drawing the bands
+near-infrared, red, and green. This technique is often used in earth
+observation data.
+
+``` r
+tm_shape(L7_mod) +
+    tm_rgb(4, 3, 2, max.value = 125)
+```
+
+![](raster_cubes_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Weather data
 
@@ -136,7 +147,33 @@ Load the weather dataset with two attributes, the monthly precipitation
     read_stars("data/full_data_daily_2013.nc"))
 ```
 
-    ## pr, tas,
+    ## Warning in CPL_read_gdal(as.character(x), as.character(options),
+    ## as.character(driver), : GDAL Message 1: Recode from UTF-8 to CP_ACP failed with
+    ## the error: "Invalid argument".
+    
+    ## Warning in CPL_read_gdal(as.character(x), as.character(options),
+    ## as.character(driver), : GDAL Message 1: Recode from UTF-8 to CP_ACP failed with
+    ## the error: "Invalid argument".
+    
+    ## Warning in CPL_read_gdal(as.character(x), as.character(options),
+    ## as.character(driver), : GDAL Message 1: Recode from UTF-8 to CP_ACP failed with
+    ## the error: "Invalid argument".
+    
+    ## Warning in CPL_read_gdal(as.character(x), as.character(options),
+    ## as.character(driver), : GDAL Message 1: Recode from UTF-8 to CP_ACP failed with
+    ## the error: "Invalid argument".
+
+    ## pr,
+
+    ## Warning in CPL_read_gdal(as.character(x), as.character(options),
+    ## as.character(driver), : GDAL Message 1: Recode from UTF-8 to CP_ACP failed with
+    ## the error: "Invalid argument".
+
+    ## tas,
+
+    ## Warning in CPL_read_gdal(as.character(x), as.character(options),
+    ## as.character(driver), : GDAL Message 1: Recode from UTF-8 to CP_ACP failed with
+    ## the error: "Invalid argument".
 
     ## stars object with 3 dimensions and 2 attributes
     ## attribute(s):
@@ -181,7 +218,7 @@ tm_shape(nc) +
     ## Warning: Currect projection of shape w[1] unknown. Long lat (epsg 4326)
     ## coordinates assumed.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 For temperature, we use a rainbow palette from the **pals** package. We
 choose discrete color classes in order to be able to improve
@@ -199,7 +236,7 @@ tm_shape(nc) +
     ## Warning: Currect projection of shape w[2] unknown. Long lat (epsg 4326)
     ## coordinates assumed.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ## Large Sentinel-2 data
 
@@ -234,7 +271,7 @@ qtm(p)
 
     ## stars_proxy object shown at 1000 by 1000 cells.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 Downsampling can be turned off with the following code. However, this
 can be very slow.
@@ -250,12 +287,12 @@ channel, we need bands 4, 3, and 2 respectively (see
 
 ``` r
 tm_shape(p) +
-  tm_rgb(3,2,1, max.value = 14000)
+  tm_rgb(4,3,2, max.value = 14000)
 ```
 
     ## stars_proxy object shown at 1000 by 1000 cells.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ## Warping and transforming stars
 
@@ -278,3 +315,56 @@ knitr::include_graphics("sentinel-2-interactive.png")
 ```
 
 <img src="sentinel-2-interactive.png" width="2014" />
+
+## Time series
+
+    ## stars object with 4 dimensions and 4 attributes
+    ## attribute(s), summary of first 1e+05 cells:
+    ##    sst [°*C]       anom [°*C]      err [°*C]     ice [percent]  
+    ##  Min.   :-1.80   Min.   :-4.69   Min.   :0.110   Min.   :0.010  
+    ##  1st Qu.:-1.19   1st Qu.:-0.06   1st Qu.:0.300   1st Qu.:0.730  
+    ##  Median :-1.05   Median : 0.52   Median :0.300   Median :0.830  
+    ##  Mean   :-0.32   Mean   : 0.23   Mean   :0.295   Mean   :0.766  
+    ##  3rd Qu.:-0.20   3rd Qu.: 0.71   3rd Qu.:0.300   3rd Qu.:0.870  
+    ##  Max.   : 9.36   Max.   : 3.70   Max.   :0.480   Max.   :1.000  
+    ##  NA's   :13360   NA's   :13360   NA's   :13360   NA's   :27377  
+    ## dimension(s):
+    ##      from   to                   offset  delta  refsys point values x/y
+    ## x       1 1440                        0   0.25      NA    NA   NULL [x]
+    ## y       1  720                       90  -0.25      NA    NA   NULL [y]
+    ## zlev    1    1                    0 [m]     NA      NA    NA   NULL    
+    ## time    1    9 1981-09-01 02:00:00 CEST 1 days POSIXct    NA   NULL
+
+    ## stars object with 3 dimensions and 4 attributes
+    ## attribute(s), summary of first 1e+05 cells:
+    ##    sst [°*C]       anom [°*C]      err [°*C]     ice [percent]  
+    ##  Min.   :-1.80   Min.   :-4.69   Min.   :0.110   Min.   :0.010  
+    ##  1st Qu.:-1.19   1st Qu.:-0.06   1st Qu.:0.300   1st Qu.:0.730  
+    ##  Median :-1.05   Median : 0.52   Median :0.300   Median :0.830  
+    ##  Mean   :-0.32   Mean   : 0.23   Mean   :0.295   Mean   :0.766  
+    ##  3rd Qu.:-0.20   3rd Qu.: 0.71   3rd Qu.:0.300   3rd Qu.:0.870  
+    ##  Max.   : 9.36   Max.   : 3.70   Max.   :0.480   Max.   :1.000  
+    ##  NA's   :13360   NA's   :13360   NA's   :13360   NA's   :27377  
+    ## dimension(s):
+    ##      from   to                   offset  delta  refsys point values x/y
+    ## x       1 1440                        0   0.25      NA    NA   NULL [x]
+    ## y       1  720                       90  -0.25      NA    NA   NULL [y]
+    ## time    1    9 1981-09-01 02:00:00 CEST 1 days POSIXct    NA   NULL
+
+``` r
+tmap_options(max.raster = c(plot = 1e4, view = 1e4))
+
+tm_shape(z[1]) +
+  tm_raster()
+```
+
+    ## Warning: The projection of the shape object z[1] is not known, while it seems to
+    ## be projected.
+
+    ## stars object downsampled to 142 by 71 cells. See tm_shape manual (argument raster.downsample)
+
+    ## Warning: Current projection of shape z[1] unknown and cannot be determined.
+
+    ## Variable(s) "NA" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.
+
+![](raster_cubes_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->

@@ -3,6 +3,8 @@ title: "Visualization of raster data cubes with tmap"
 author: "Martijn Tennekes"
 date: "9/18/2020"
 output: rmarkdown::github_document
+editor_options: 
+  chunk_output_type: console
 ---
   
 ```{r setup, include=FALSE}

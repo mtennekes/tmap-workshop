@@ -80,6 +80,20 @@ tm_shape(L7_mod) +
   tm_rgb(3, 2, 1, max.value = 125)
 ```
 
+We can show the old image and the new image side by side with `tmap_arrange`:
+
+
+```{r}
+tmap_arrange(
+tm_shape(L7) +
+  tm_rgb(3, 2, 1),
+tm_shape(L7_mod) +
+  tm_rgb(3, 2, 1, max.value = 125)
+)
+
+
+```
+
 We can also draw a false color image, by drawing the bands near-infrared, red, and green. This technique is often used in earth observation data.
 
 ```{r}
@@ -138,7 +152,7 @@ s2 = paste0("SENTINEL2_L1C:/vsizip/", granule,
 (p = read_stars(s2))
 ```
 
-Note that `p` is a `stars_proxy` object, so the data is not stored into memory. We we plot it with **tmap**, where this time we use the `qtm` (quick thematic map) function, the object is downsampled automatically by default.
+Note that `p` is a `stars_proxy` object, so the data is not stored into memory. When we plot it with **tmap**, where this time we use the `qtm` (quick thematic map) function, the object is downsampled automatically by default.
 
 ```{r}
 qtm(p)
@@ -176,9 +190,23 @@ tm_shape(p) +
 knitr::include_graphics("sentinel-2-interactive.png")
 ```
 
+The tmap option `max.raster` controls the number of cells to which stars objects are downsampled. By default, it is 1 million, but for small multiples, it is better to use lower values:
+
+```{r}
+tmap_options(max.raster = c(plot = 1e4, view = 1e4))
+```
+
+Raster objects are by default warped. When we disable warping, cell are converted to polygons:
+
+```{r}
+tm_shape(p, raster.warp = FALSE) +
+  tm_rgb(3,2,1, max.value = 14000)
+```
+
 
 ## Time series
 
+The following code chunk loads data from the **starsdata** package
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 x = c(
@@ -198,11 +226,9 @@ file_list = system.file(paste0("netcdf/", x), package = "starsdata")
 
 ```
 
+The following code shows a time series plot of the first attribute. The parameter `midpoint` defines the neutral color of the diverging palette.
 
 ```{r}
-
-tmap_options(max.raster = c(plot = 1e4, view = 1e4))
-
 tm_shape(z[1]) +
-  tm_raster()
+  tm_raster(midpoint = 15, n = 7, style = "quantile")
 ```

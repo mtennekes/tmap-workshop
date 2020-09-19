@@ -124,6 +124,20 @@ tm_shape(L7_mod) +
 
 ![](raster_cubes_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
+We can show the old image and the new image side by side with
+`tmap_arrange`:
+
+``` r
+tmap_arrange(
+tm_shape(L7) +
+  tm_rgb(3, 2, 1),
+tm_shape(L7_mod) +
+  tm_rgb(3, 2, 1, max.value = 125)
+)
+```
+
+![](raster_cubes_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
 We can also draw a false color image, by drawing the bands
 near-infrared, red, and green. This technique is often used in earth
 observation data.
@@ -133,7 +147,7 @@ tm_shape(L7_mod) +
     tm_rgb(4, 3, 2, max.value = 125)
 ```
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Weather data
 
@@ -218,7 +232,7 @@ tm_shape(nc) +
     ## Warning: Currect projection of shape w[1] unknown. Long lat (epsg 4326)
     ## coordinates assumed.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 For temperature, we use a rainbow palette from the **pals** package. We
 choose discrete color classes in order to be able to improve
@@ -236,7 +250,7 @@ tm_shape(nc) +
     ## Warning: Currect projection of shape w[2] unknown. Long lat (epsg 4326)
     ## coordinates assumed.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ## Large Sentinel-2 data
 
@@ -261,7 +275,7 @@ s2 = paste0("SENTINEL2_L1C:/vsizip/", granule,
     ## band    1     4     NA    NA                    NA    NA B4,...,B8
 
 Note that `p` is a `stars_proxy` object, so the data is not stored into
-memory. We we plot it with **tmap**, where this time we use the `qtm`
+memory. When we plot it with **tmap**, where this time we use the `qtm`
 (quick thematic map) function, the object is downsampled automatically
 by default.
 
@@ -271,7 +285,7 @@ qtm(p)
 
     ## stars_proxy object shown at 1000 by 1000 cells.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 Downsampling can be turned off with the following code. However, this
 can be very slow.
@@ -292,7 +306,7 @@ tm_shape(p) +
 
     ## stars_proxy object shown at 1000 by 1000 cells.
 
-![](raster_cubes_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ## Warping and transforming stars
 
@@ -316,7 +330,29 @@ knitr::include_graphics("sentinel-2-interactive.png")
 
 <img src="sentinel-2-interactive.png" width="2014" />
 
+The tmap option `max.raster` controls the number of cells to which stars
+objects are downsampled. By default, it is 1 million, but for small
+multiples, it is better to use lower values:
+
+``` r
+tmap_options(max.raster = c(plot = 1e4, view = 1e4))
+```
+
+Raster objects are by default warped. When we disable warping, cell are
+converted to polygons:
+
+``` r
+tm_shape(p, raster.warp = FALSE) +
+  tm_rgb(3,2,1, max.value = 14000)
+```
+
+    ## stars_proxy object shown at 100 by 100 cells.
+
+![](raster_cubes_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
 ## Time series
+
+The following code chunk loads data from the **starsdata** package
 
     ## stars object with 4 dimensions and 4 attributes
     ## attribute(s), summary of first 1e+05 cells:
@@ -351,11 +387,12 @@ knitr::include_graphics("sentinel-2-interactive.png")
     ## y       1  720                       90  -0.25      NA    NA   NULL [y]
     ## time    1    9 1981-09-01 02:00:00 CEST 1 days POSIXct    NA   NULL
 
-``` r
-tmap_options(max.raster = c(plot = 1e4, view = 1e4))
+The following code shows a time series plot of the first attribute. The
+parameter `midpoint` defines the neutral color of the diverging palette.
 
+``` r
 tm_shape(z[1]) +
-  tm_raster()
+  tm_raster(midpoint = 15, n = 7, style = "quantile")
 ```
 
     ## Warning: The projection of the shape object z[1] is not known, while it seems to
@@ -365,6 +402,4 @@ tm_shape(z[1]) +
 
     ## Warning: Current projection of shape z[1] unknown and cannot be determined.
 
-    ## Variable(s) "NA" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.
-
-![](raster_cubes_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](raster_cubes_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->

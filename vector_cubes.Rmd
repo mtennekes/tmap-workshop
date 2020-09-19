@@ -35,7 +35,6 @@ This example is the North Carolina SIDS (sudden infant death syndrome) data set.
 The code to create the vector cube is the following:
 
 ```{r}
-
 nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
 nc.df = st_set_geometry(nc, NULL) # m is a regular, non-spatial data.frame
 head(nc.df)
@@ -77,7 +76,7 @@ years = st_get_dimension_values(nc.SIR, 2)
 nc.SIR.sf = st_as_sf(nc.SIR)
 
 # plot it as follows
-tm_shape(nc.SIR.sf) + tm_polygons(years, title = "SIR") + 
+tm_shape(nc.SIR.sf) + tm_polygons(years, title = "SIR", palette = "Purples", n = 10) + 
   tm_facets(free.scales = FALSE) +
   tm_layout(panel.labels = years)
 ```

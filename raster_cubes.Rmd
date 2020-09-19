@@ -57,7 +57,7 @@ We can also create an rgb image as with `tm_rgb`:
 
 ```{r}
 tm_shape(L7) +
-  tm_rgb(1, 2, 3)
+  tm_rgb(3, 2, 1)
 ```
 
 The image is a bit too dark due to the low values; recall that most values are around 50-100, while the value range is from 0 to 255.
@@ -77,7 +77,14 @@ L7_mod = L7 %>% st_apply(3, pmax, 25) %>%
   '-'(25)
 
 tm_shape(L7_mod) +
-  tm_rgb(1, 2, 3, max.value = 125)
+  tm_rgb(3, 2, 1, max.value = 125)
+```
+
+We can also draw a false color image, by drawing the bands near-infrared, red, and green. This technique is often used in earth observation data.
+
+```{r}
+tm_shape(L7_mod) +
+    tm_rgb(4, 3, 2, max.value = 125)
 ```
 
 ## Weather data
@@ -148,8 +155,10 @@ We can plot the image by using `tm_rgb`. For the red, green, and blue channel, w
 
 ```{r}
 tm_shape(p) +
-  tm_rgb(3,2,1, max.value = 14000)
+  tm_rgb(4,3,2, max.value = 14000)
 ```
+
+
 
 ## Warping and transforming stars
 

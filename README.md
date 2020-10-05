@@ -1,4 +1,4 @@
-# Visualising spatial and spatiotemporal data cubes with tmap
+# Visualising spatial data with tmap
 
 In this workshop you will learn how to plot spatial data in R by using the **tmap** package. This package is an implementation of the grammar of graphics for thematic maps, and resembles the syntax of **ggplot2**. This package is useful for both *exploration* and *publication* of spatial data, and offers both *static* and *interactive* plotting.
 
@@ -57,7 +57,12 @@ library(spDataLarge)
 
 #### Open Street Map data
 
-Large datasets from Open Street Map per country can be found at https://download.geofabrik.de/ 
+Large datasets from Open Street Map per country can be found at https://download.geofabrik.de/.
+There is a handy R-package, called `geofabrik` via which these datasets can be loaded into R.
+
+```{r}
+library(geofabrik)
+```
 
 #### Natural Earth Data
 The package `rnaturalearth` is an interface to `www.naturalearthdata.com`, a great source of shapes.
